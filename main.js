@@ -64,6 +64,40 @@ const app = Vue.createApp({
 
             this.checkClear();
         },
+        openAuto(){
+            const sz = this.bomb.length;
+            while (true){
+                let changed = false;
+
+                for (let i=0; i<sz; i++){
+                    for (let j=0; j<sz; j++){
+                        if (this.visibility[i][j] == 1 && this.counts[i][j]==0){
+
+                            console.log([i,j, this.visibility[i][j], this.counts[i][j]]);
+
+                            for (let k=-1; k<2; k++){
+                                for (let l=-1; l<2; l++){
+                                    const y = i + k;
+                                    const x = j + l;
+                                    if (x >= 0 && x < sz && y>=0 && y<sz && this.visibility[y][x]==0){
+                                        this.visibility[y][x] = 1;
+                                        changed = true;
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+
+                // break;
+
+                if (!changed){
+                    break;
+                }
+            }
+
+        },
 
         checkClear(){
 
