@@ -1,0 +1,33 @@
+<html>
+<head>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./main.js" defer></script>
+    <link href="./style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <p>
+                Matrix size
+                <input type="text" v-model="matrixSizeTxt"/>
+            </p>
+            <button @click="startGame">Start a game</button>
+        </div>
+        <div>
+            <table>
+                <tr v-for="(row,i) in counts">
+                    <td v-for="(d,j) in row" :id="i.toString()+'_'+j.toString()" @click="clicked" @click.right.prevent="rightClicked">
+                        {{char(i,j)}}
+                        <!-- <div v-if="visibility[i][j]==1">{{d}}</div>
+                        <div v-if="visibility[i][j]==2">★</div> -->
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <h1>{{message}}</h1>
+
+    </div>
+</body>
+
+</html>
