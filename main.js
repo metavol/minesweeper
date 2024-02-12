@@ -2,6 +2,7 @@ const app = Vue.createApp({
     data(){
         return{
             matrixSizeTxt: '5',
+            numberOfBombsTxt: '5',
             bomb :
                 [[0,0,1],
                 [0,0,0],
@@ -19,7 +20,7 @@ const app = Vue.createApp({
 
             const sz = Number(this.matrixSizeTxt);
             this.bomb = Array(sz).fill(0).map(()=>Array(sz).fill(0));
-            const n_bomb = Math.floor(sz);
+            const n_bomb = Number(this.numberOfBombsTxt);
 
             // ちょうどn_bomb個の爆弾をしかける
             for (let i=0; i<n_bomb; i++){
@@ -71,26 +72,7 @@ const app = Vue.createApp({
 
                 for (let i=0; i<sz; i++){
                     for (let j=0; j<sz; j++){
-                        if (this.visibility[i][j] == 1 && this.counts[i][j]==0){
-
-                            // console.log([i,j, this.visibility[i][j], this.counts[i][j]]);
-
-                            for (let k=-1; k<2; k++){
-                                for (let l=-1; l<2; l++){
-                                    const y = i + k;
-                                    const x = j + l;
-                                    if (x >= 0 && x < sz && y>=0 && y<sz && this.visibility[y][x]==0){
-                                        this.visibility[y][x] = 1;
-                                        changed = true;
-                                    }
-                                }
-                            }
-                        }
-
-                        if (this.visibility[i][j] == 1 && this.counts[i][j] > 0){
-
-                            // console.log([i,j, this.visibility[i][j], this.counts[i][j]]);
-
+                            if (this.visibility[i][j] == 1){
                             let sum = 0;
                             for (let k=-1; k<2; k++){
                                 for (let l=-1; l<2; l++){
@@ -119,13 +101,60 @@ const app = Vue.createApp({
                                         }
                                     }
                                 }
-    
-
-
                             }
-
-
                         }
+
+
+                        // if (this.visibility[i][j] == 1 && this.counts[i][j]==0){
+
+                        //     // console.log([i,j, this.visibility[i][j], this.counts[i][j]]);
+
+                        //     for (let k=-1; k<2; k++){
+                        //         for (let l=-1; l<2; l++){
+                        //             const y = i + k;
+                        //             const x = j + l;
+                        //             if (x >= 0 && x < sz && y>=0 && y<sz && this.visibility[y][x]==0){
+                        //                 this.visibility[y][x] = 1;
+                        //                 changed = true;
+                        //             }
+                        //         }
+                        //     }
+                        // }
+
+                        // if (this.visibility[i][j] == 1 && this.counts[i][j] > 0){
+
+                        //     // console.log([i,j, this.visibility[i][j], this.counts[i][j]]);
+
+                        //     let sum = 0;
+                        //     for (let k=-1; k<2; k++){
+                        //         for (let l=-1; l<2; l++){
+                        //             const y = i + k;
+                        //             const x = j + l;
+                        //             if (x >= 0 && x < sz && y>=0 && y<sz && this.visibility[y][x]==2){
+                        //                 sum += 1;
+                        //             }
+                        //         }
+                        //     }
+
+                        //     if (sum == this.counts[i][j]){
+                        //         // full open
+                        //         console.log([i,j,sum]);
+                        //         for (let k=-1; k<2; k++){
+                        //             for (let l=-1; l<2; l++){
+                        //                 const y = i + k;
+                        //                 const x = j + l;
+                        //                 if (x >= 0 && x < sz && y>=0 && y<sz && this.visibility[y][x]==0){
+                        //                     this.visibility[y][x]=1;
+                        //                     if (this.bomb[y][x]==1){
+                        //                         this.message = "Game Over";
+                        //                         return;
+                        //                     }
+                        //                     changed = true;
+                        //                 }
+                        //             }
+                        //         }
+                        //     }
+                        // }
 
                         
                     }
@@ -135,6 +164,7 @@ const app = Vue.createApp({
                     break;
                 }
             }
+            this.checkClear();
 
         },
 
@@ -170,7 +200,7 @@ const app = Vue.createApp({
             }else if (this.visibility[i][j]==1){
                 return this.counts[i][j];
             }else {
-                return "★";
+                return "@";
             }
         }
 

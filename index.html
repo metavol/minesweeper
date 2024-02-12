@@ -13,6 +13,10 @@
                 Matrix size
                 <input type="text" v-model="matrixSizeTxt"/>
             </p>
+            <p>
+                Number of bombs
+                <input type="text" v-model="numberOfBombsTxt"/>
+            </p>
             <button @click="startGame">Start a game</button>
             <button @click="AI">AI assistant</button>
         </div>
@@ -21,8 +25,6 @@
                 <tr v-for="(row,i) in counts">
                     <td v-for="(d,j) in row" :id="i.toString()+'_'+j.toString()" @click="clicked" @click.right.prevent="rightClicked">
                         {{char(i,j)}}
-                        <!-- <div v-if="visibility[i][j]==1">{{d}}</div>
-                        <div v-if="visibility[i][j]==2">★</div> -->
                     </td>
                 </tr>
             </table>
