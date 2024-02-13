@@ -18,7 +18,13 @@
                 <input type="text" v-model="numberOfBombsTxt"/>
             </p>
             <button @click="startGame">Start a game</button>
-            <button @click="AI">AI assistant</button>
+            <button @click="AI">AI helps</button>
+            <!-- <button @click="turnOnIntrusiveAI"
+             :style="{backgroundColor: yellow}">
+                AI intrusively helps
+            </button> -->
+            <input type="checkbox" id="intrusiveAIcheckbox" v-model="intrusiveAIisActive" />
+            <label for="intrusiveAIcheckbox">AI intrusively helps</label>
         </div>
         <div>
             <table>

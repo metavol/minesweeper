@@ -11,7 +11,8 @@ const app = Vue.createApp({
                 [[0,0,0],
                 [0,0,0],
                 [0,0,0]],
-        message: "",
+            message: "",
+            intrusiveAIisActive : false,
         }
     },
     methods:{
@@ -38,8 +39,7 @@ const app = Vue.createApp({
             this.visibility = Array(sz).fill(0).map(()=>Array(sz).fill(0));
             // this.visibility[Math.floor(sz/2)][Math.floor(sz/2)] = 1;
 
-            // debugger;
-
+            setInterval(this.intrusiveAI, 500);
 
         },
         clicked (event) {
@@ -47,13 +47,7 @@ const app = Vue.createApp({
             const i = Number(ij[0]);
             const j = Number(ij[1]);
             this.visibility[i][j] = 1;
-
-            if (this.bomb[i][j]==1){
-                this.message = "Game Over";
-            }
-
             this.checkClear();
-
         },
         rightClicked (event) {
             const ij = event.target.id.split('_');
@@ -104,59 +98,6 @@ const app = Vue.createApp({
                             }
                         }
 
-
-                        // if (this.visibility[i][j] == 1 && this.counts[i][j]==0){
-
-                        //     // console.log([i,j, this.visibility[i][j], this.counts[i][j]]);
-
-                        //     for (let k=-1; k<2; k++){
-                        //         for (let l=-1; l<2; l++){
-                        //             const y = i + k;
-                        //             const x = j + l;
-                        //             if (x >= 0 && x < sz && y>=0 && y<sz && this.visibility[y][x]==0){
-                        //                 this.visibility[y][x] = 1;
-                        //                 changed = true;
-                        //             }
-                        //         }
-                        //     }
-                        // }
-
-                        // if (this.visibility[i][j] == 1 && this.counts[i][j] > 0){
-
-                        //     // console.log([i,j, this.visibility[i][j], this.counts[i][j]]);
-
-                        //     let sum = 0;
-                        //     for (let k=-1; k<2; k++){
-                        //         for (let l=-1; l<2; l++){
-                        //             const y = i + k;
-                        //             const x = j + l;
-                        //             if (x >= 0 && x < sz && y>=0 && y<sz && this.visibility[y][x]==2){
-                        //                 sum += 1;
-                        //             }
-                        //         }
-                        //     }
-
-                        //     if (sum == this.counts[i][j]){
-                        //         // full open
-                        //         console.log([i,j,sum]);
-                        //         for (let k=-1; k<2; k++){
-                        //             for (let l=-1; l<2; l++){
-                        //                 const y = i + k;
-                        //                 const x = j + l;
-                        //                 if (x >= 0 && x < sz && y>=0 && y<sz && this.visibility[y][x]==0){
-                        //                     this.visibility[y][x]=1;
-                        //                     if (this.bomb[y][x]==1){
-                        //                         this.message = "Game Over";
-                        //                         return;
-                        //                     }
-                        //                     changed = true;
-                        //                 }
-                        //             }
-                        //         }
-                        //     }
-                        // }
-
-                        
                     }
                 }
 
@@ -168,14 +109,25 @@ const app = Vue.createApp({
 
         },
 
+        intrusiveAI(){
+            if (this.intrusiveAIisActive){
+                this.AI();
+            }
+        },
+
         checkClear(){
 
             let cleared = true;
+            let dead = false;
+
             for (let i=0; i<this.bomb.length; i++){
                 for (let j=0; j<this.bomb.length; j++){
 
                     if (this.visibility[i][j] == 0){
                         cleared = false;
+                    }
+                    if (this.bomb[i][j]==1 & this.visibility[i][j] == 1){
+                        dead = true;
                     }
                     if (this.bomb[i][j] == 1 & this.visibility[i][j] == 2){
                         continue;
@@ -188,7 +140,9 @@ const app = Vue.createApp({
                 }
             }
 
-            if (cleared){
+            if (dead){
+                this.message = "Game Over";
+            } else if (cleared){
                 this.message = "Clear!";
             }
 
